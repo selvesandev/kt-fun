@@ -227,3 +227,214 @@ When something is mutable you can update and add more. vice versa for immutable 
     val myMapMutable = mutableMapOf("a" to "Hari", "b" to "Gopal")
     myMapMutable["c"]="Chameli"
 ```
+
+### Functions
+```
+//type notation is required in function.
+fun addNumber(x: Double, y: Double): Double {
+    val sum = x + y;
+    return sum;
+}
+
+fun main() {
+    println(addNumber(2.0, 2.6));
+}
+```
+
+**Function Arguments**
+You can pass argument value directly specifying the argument name.
+```
+fun addNumber(x: Double = 10.0, y: Double = 0.0): Double {
+    val sum = x + y;
+    return sum;
+}
+
+fun main() {
+    println(addNumber(y = 20.0));
+}
+```
+
+**vararg**
+```
+fun displayInfo(vararg names: String) {
+    for (name in names) {
+        println(name);
+    }
+}
+
+fun main() {
+    println(addNumber(y = 20.0));
+    displayInfo(*arrayOf("Jena", "Selvesan", "James"))
+}
+```
+
+#### Function Overload.
+Function with a same name but different number of arguments.
+```
+fun add(a: Int, b: Int): Int {
+    return a + b;
+}
+
+fun add(a: Int, b: Int, c: Int): Int {
+    return a + b + c;
+}
+
+
+fun add(a: Int, b: Int, c: Int, d: Int): Int {
+    return a + b + c + d;
+}
+
+fun main() {
+    println(add(2, 2, 2, 2)) // calling the 4th function
+    println(add(2, 2)) // calling the 1st function
+}
+```
+
+#### Polymorphism
+Function with a same name and with the same number of arguments but with a different data type argument.
+
+```
+fun show(cardId: Int) {
+    println("Card ID $cardId")
+}
+
+fun show(cardName: String) {
+    println("Name $cardName")
+}
+
+fun main() {
+    show("Selvesan");//calling the 2nd function
+    show(2345);//calling the 1st function.
+}
+```
+
+
+### Scope
+You cannot have identical function i.e. with a same definitions( having same name, datatype and argument) even in two different files under a same folder(or package).  
+A variable declared inside a function or a statement is only available to that function.
+```
+    for (i in 1..4) {
+        var x = i; // local available only inside for.
+    }
+    print(x); // x won't be available here.
+```
+  
+**However you can define a global variable.**
+```
+var name: String? = null;
+
+fun showInfo() {
+    name = "Welcome $name";
+    print(name); // prints "Welcome selvesan"
+}
+
+fun main() {
+    name = "Selvesan"
+    showInfo()
+}
+```
+
+
+### Lambda.
+Is a approach to write a function.
+
+```
+fun sum(num1: Int, num2: Int): Int {
+    return (num1 + num2)
+}
+
+fun main() {
+    println(sum(2, 2))
+}   
+```
+
+**OR**
+
+```
+val sum = { num1: Int, num2: Int -> (num1 + num2) }
+
+fun main() {
+    println(sum(2, 2))
+}
+```
+**Inbuilt Lambda**
+
+```
+val listOfNum = arrayOf(1, 2,    3, 4)
+    listOfNum.forEach { number ->
+        println(number)
+        println(number + 2)
+    }
+```
+
+## Object Oriented 
+### Class
+Create a `class` inside a package. Create a package inside your `src` folder `com.car.maintain`.
+
+* The name of the class and file name should be same. `Car.kt` has a class `Car`
+```
+package com.car.maintain
+
+class Car {
+    
+}
+```
+
+#### Init
+Executed when instantiated.
+```
+package com.car.maintain
+
+class Car {
+    init {
+        //fired automatically when a class is instantiated
+        println("Instantiated Car..")
+    }
+}
+
+fun main() {
+    val car = Car();
+}
+```
+
+#### Class with properties
+```
+class Car(val type: String, val model: Int, val price: Double, val mileage: Int, val owner: String) {
+
+}
+
+fun main() {
+    val car = Car("BMW", 2015, 4500.12, 30, "Selvesan");
+    print(car.mileage.toString() + " " + car.model)
+}
+```
+
+### Class with Method
+```
+class Car(val type: String, val model: Int, val price: Double, val mileage: Int, val owner: String) {
+    
+    fun getCarPrice(): Double {
+        return price;
+        //property can be access by both this.price or price
+    }
+}
+
+
+
+fun main() {
+    val car = Car("BMW", 2015, 4500.12, 30, "Selvesan");
+    println(car.getCarPrice())
+}
+```
+
+### Array List of Class Type.
+
+```
+    val listOfCars = arrayListOf<Car>();
+    listOfCars.add(Car("BMW", 2015, 4500.12, 30, "Selvesan"))
+    listOfCars.add(Car("KIA", 2017, 5600.12, 20, "James"))
+
+    for (carObj in listOfCars) {
+        print(carObj.getCarPrice());
+    }
+```
