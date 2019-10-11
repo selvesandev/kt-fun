@@ -438,3 +438,292 @@ fun main() {
         print(carObj.getCarPrice());
     }
 ```
+
+### Primary Constructor
+In primary constructor the value can be passed to a class when it is initialized.
+```
+class TruckInheritance(type: String) {
+    var type: String? = type;
+}
+
+val truck = TruckInheritance("BMW");
+truck.type // error invalid code
+```
+You cannot access the property of a primary constructor after it is assigned to the class because it is simply a set of argument and not a class's property.  
+Therefor to access the property of a `primary constructor` you will have to assign it to the local property with the help of `init` method.
+ 
+```
+class TruckInheritance(type: String) {
+    var type: String? = type;
+    init {
+        //this.type = type;
+        type=type;//both works  
+    }
+}
+
+val truck = TruckInheritance("BMW");
+truck.type // success
+```
+
+**NOTE** However there is a method by which you can access the class argument passed to the primary constructor like it's property by using the `var` or `val` keyword in the argument.
+```
+class TruckInheritance(val type: String){
+    
+}
+val truck = TruckInheritance("BMW");
+truck.type // success
+
+```
+
+
+### Secondary Constructor
+Secondary constructor is declared as a function inside kotlin.  
+You can have two different constructor in kotlin but they should have different set of arguments.
+**Use the primary Constructor method if you have only once constructor in a class**
+
+```
+class ClassConstructor {
+    var name: String? = null;
+    var age: Int? = null;
+
+    //constructor with 2 args
+    constructor(name: String, age: Int) {
+        this.name = name;
+        this.age = age;
+    }
+
+    //constructor with 1 args
+    constructor(name: String) {
+        this.name = name;
+    }
+
+    fun getOutput(): String {
+        return "Hello $name you are $age years old";
+    }
+}
+
+fun main() {
+    val obj = ClassConstructor("Selvesan", 20);//initializing the class with the 1st constructor
+    val obj2 = ClassConstructor("Selvesan");//initializing the class with 2nd constructor.
+}
+
+```
+You cannot declare the property inside a secondary constructor directly.
+```
+    //you cannot do this
+    constructor(var age: Int){
+    
+    }
+    //you can do this.
+    constructor(age:Int){
+    
+    }
+```
+**NOTE** You can have both primary and secondary constructor at the same time but you will have to bind `this` keyword to the secondary constructor.
+ 
+```
+class ClassConstructor(var age: Int) {
+    var name: String? = null;
+
+    constructor(age: Int, name: String) : this(age) {
+        this.name = name;
+    }
+}
+
+//initializing the class with the primary constructor
+val obj = ClassConstructor(20);
+print(obj.age)
+
+//initializing the class with secondary constructor.
+val obj2 = ClassConstructor(20, "Selvesan");
+println(obj2.age.toString() + ' ' + obj2.name);
+
+```
+
+**NOTE** The secondary constructor will be always be called after the `init {} ` block if there is any.
+
+
+```
+class ClassConstructor(var age: Int) {
+    var name: String? = null;
+    
+    init {
+        // here the name will be null
+        println(this.name + " here" + this.age.toString()) 
+    }
+
+
+    constructor(age: Int, name: String) : this(age) {
+        this.name = name;
+    }
+}
+
+//initializing the class with the primary constructor
+val obj = ClassConstructor(20);
+print(obj.age)
+
+//initializing the class with secondary constructor.
+val obj2 = ClassConstructor(20, "Selvesan");
+println(obj2.age.toString() + ' ' + obj2.name);
+
+```
+
+
+### Inheritance
+By default classes are `public` and `final` and cannot he inherited therefore you will have to declare the class as `open` to inherit it.
+```
+open class Animal {
+    var color: String? = null;
+    
+    fun eat() {
+
+    }
+}
+
+class Dog : Animal() {
+    var breed: String? = null;
+
+    fun bark() {
+    
+    }
+}
+
+class Cat : Animal() {
+    var age: Int = 0;
+    
+    fun meow() {
+
+    }
+}
+
+```
+
+### Overriding.
+* Methods are also by default `public` and `final` therefore you will have to `open`  the method in order to `override` it.
+* `override` keyword should be used to override the function
+
+```
+
+open class Animal {
+    var color: String? = null;
+    open fun eat() {
+        println("Animal Eat");
+    }
+}
+
+class Dog : Animal() {
+    var breed: String? = null;
+
+    fun bark() {
+        println("Bark")
+    }
+
+    override fun eat() {
+        println("The dog is eating.");
+    }
+}
+```
+* You can call the parents method which has been overridden with the help of `super` keyword.
+
+```
+    override fun eat() {
+        super<Animal>.eat();//parent Animal Class's method eat.
+        println("The dog is eating.");
+    }
+```
+
+* Property can also be overridden by `open` and `override`
+
+```
+open class Animal {
+    open var color: String? = null;
+}
+
+class Dog : Animal() {
+    override var color: String? = null;
+}
+```
+
+### Overriding Constructor.
+
+##### Primary
+```
+open class Animal(var color: String) {
+    init {
+        println("Animal $color")
+    }
+}
+
+class Dog(color: String) : Animal(color) {
+    init {
+        println("Dog $color")
+    }
+}
+
+
+val dog = Dog("Black");
+
+```
+
+##### Secondary.
+
+```
+open class Animal() {
+    open var color: String? = null;
+
+    constructor(color: String) : this() {
+        print("Animal $color");
+    }
+}
+
+class Dog : Animal {
+    var breed: String? = null;
+
+    constructor(color: String) : super(color) {
+        println("DOG $color")
+    }
+
+}
+
+val dog = Dog("Black");
+
+
+```
+
+
+### Visibility Modifiers
+In kotlin everything is public by nature.
+
+* When a class or method is defined as `private` it is visible to only the file.
+
+```
+private fun main() {
+    //won't be visible to another file
+}
+
+private class Person {
+    //won't be visible to another file    
+}
+
+```
+
+* If a class or method is declared as `internal` then it will be declared only inside the `module`
+
+* `protected` is not applicable to the top label class or method
+
+```
+
+//not allowed
+protected fun main() {
+
+}
+//not allowed.
+protected class Person {
+
+}
+
+```
+* `private` property and method in a class will be visible only within the scope of the same class. 
+* `protected` property and method in a class will be visible to child class but won't be available in a object. 
+* `internal` property and method in a class will be visible to child class and also inside a object within a same module. 
+  
