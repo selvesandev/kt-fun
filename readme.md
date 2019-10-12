@@ -727,3 +727,121 @@ protected class Person {
 * `protected` property and method in a class will be visible to child class but won't be available in a object. 
 * `internal` property and method in a class will be visible to child class and also inside a object within a same module. 
   
+  
+### Class Extensions
+A Extension is a method that is defined outside the class but can act as a class's method.
+
+* Extension function cannot access to private or protected property
+* Extension can have only this not super.
+
+```
+
+class ABC(var name: String) {
+
+}
+
+fun ABC.getYourName(): String {
+    return this.name;
+}
+
+
+val objA = ABC("Selvesan");
+println(objA.getYourName())
+```
+**Extension Use Case** Adding extension to `kotlin's` inbuilt class `ArrayList`.
+
+```
+fun ArrayList<Int>.findMax(): Int {
+    var maxNumber = 0;
+
+    for (item in this) {
+        if (item > maxNumber) {
+            maxNumber = item;
+        }
+    }
+    return maxNumber;
+}
+
+
+val listOfElement = ArrayList<Int>();
+listOfElement.add(1);
+listOfElement.add(5);
+listOfElement.add(2);
+
+println(listOfElement.findMax());
+```
+
+
+### Data Class
+The purpose of the data class is to only deal with the data not the object.
+
+```
+data class PersonData(val name: String, val age: Int, val gender: String);
+
+val person = PersonData("Selvesan", 20, "Male");
+println(person.name + ' ' + person.age)
+
+``` 
+
+```
+class SuperClass(val name: String, val age: Int) {
+
+}
+
+
+val sp = SuperClass("James", 20);
+val sp2 = SuperClass("James", 20);
+//this won't be equal as they are two different references.
+if (sp == sp2) {
+    println("Equal")
+}else{
+    println("Not equal");
+}
+
+// However this comparison will print equal in case of dataclass.
+```
+
+
+### Interface.
+
+* Interface is not a class. It is something like a listener eg: onclick of btn something should happen. On android if you want to do something on a click of a button.
+
+* You cannot instantiate a interface just like your abstract class.
+
+* Interface can contain only abstract property but can contain both abstract and normal method.
+
+* Whatever you define inside a interface is by default `abstract` and `open` in nature and should not contain a initial property should always be empty declaration.
+
+* In case of interface nothing is final everything is open in nature there you cannot declare a final property or method.
+
+* The abstract method and property should be overridden by the class that inherits it.
+
+```
+interface MyBtnClickListener {
+
+    var name: String
+
+    fun onTouch()
+
+    fun onclick() {
+        //you can override this function or not this is totally your choice.
+        println("You called onClick from interface...")
+    }
+}
+
+class Button(override var name: String) : MyBtnClickListener {
+
+    override fun onTouch() {
+        println("Button was touched")
+    }
+
+}
+
+
+fun main() {
+
+    val myBtn = Button("Selvesan");
+    myBtn.onTouch();
+    myBtn.onclick();
+}
+```
