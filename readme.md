@@ -845,3 +845,448 @@ fun main() {
     myBtn.onclick();
 }
 ```
+
+
+### Abstract Classes, Methods and Property.
+
+* Abstract Method and property can be declared only inside a abstract class.
+
+* A Abstract Method doest not have a body in it's definition.
+
+* A Abstract Method or Property should be overridden by a child class.
+ 
+* Abstract Method and Property are open by default.s
+
+* Abstract Class cannot be instantiated.
+
+```
+abstract class PersonClass {
+    abstract val color: String;
+    abstract fun getHeight();
+}
+
+
+class Nepali(override val color: String) : PersonClass() {
+    override fun getHeight() {
+    }
+}
+
+val np = Nepali("White");
+
+```
+
+
+### Object Class Declaration or Singletons.
+In Kotlin we cannot declare `static` variable and methods. Declare `object` which creates a singleton object when program runs.
+
+```
+object Customer {
+    var id: Int = 1;//behaves like a static variable.
+
+    fun registerCustomer() {
+        //behaves like a static method.
+        println("Customer registered #id " + this.id)
+
+    }
+}
+
+fun main() {
+    Customer.id = 2345;
+    Customer.registerCustomer(); //no need to declare a object.
+}
+```
+
+* A Object class cannot be inherited but it can inherit other class. `cannot inherit from singleton`
+
+* The method of a parent class inherited by a object class can be used statically.
+
+```
+object Customer : CheckIn() {
+    var id: Int = 1;//behaves like a static variable.
+
+    fun registerCustomer() {
+        //behaves like a static method.
+        println("Customer registered #id " + this.id)
+
+    }
+}
+
+open class CheckIn {
+    init {
+        println("Initialized")
+    }
+    fun mySuperClass(){
+        println("From my super class");
+    }
+}
+
+Customer.id = 2345;
+Customer.registerCustomer(); //no need to declare a object.
+Customer.mySuperClass();
+
+```
+
+
+* We can have `init` method inside the singleton but we cannot have a constructor.
+
+
+### Companion Object
+A Object class defined inside a class as companion. When a companion object is defined inside a class the object's property and method can be accessed as `static` members of the class. 
+```
+
+class MyCompClass {
+    companion object CustomerData {
+        var count: Int = 100
+
+        fun printCount() {
+            print("Count is $count");
+        }
+    }
+}
+
+fun main() {
+    MyCompClass.printCount();
+}
+
+```
+
+
+### Lazy Singleton
+By creating a lazy singleton pattern inside a class you can create a instance quickly of a class constructor is not loaded by `lazy singleton` instantiation.
+
+The lazy singleton pattern the object is created only once.
+
+```
+
+class LazySingleton {
+    var name: String? = null;
+
+    private constructor(){
+        println("You instantiated the class")
+    }
+
+    companion object {
+        val instance: LazySingleton by lazy { LazySingleton() }
+    }
+}
+
+val ob1 = LazySingleton.instance;
+ob1.name = "Tom";
+
+val ob2 = LazySingleton.instance;
+println(ob2.name) // prints tom
+
+```
+
+* Here the second initialization of class does not create a new instance but initializes the 1st created object. Hence the `ob2.name` outputs the same value of `ob1.name`
+
+
+
+
+
+### High Level Function and Lambdas
+* Lambdas is a function without name.
+
+```
+//Syntax...
+
+val myLamb = (Int,Int) -> Int={x , y -> x + y}
+
+variable_name = (arg1 type, arg2 type) -> return type = { arg1, arg2 -> body}
+
+//The type declaration in lambda function are optional when passing it to a function.
+```
+
+* High level function can accept functions a parameters or can return a function or can do both.
+```
+    fun addTwoNumber(a:Int, b:Int, myFuncLamb: (Int, Int) -> Int)
+```
+
+* A lambda function is passed right after closing parenthesis of the function call.
+```
+    obj.addNumberWithLambda(2, 2) { s: Int,s: Int -> s + s }
+```
+
+* Access or modify the variable declared outside the lambda
+```
+    var result = 0;
+    val myLmb = { x: Int, y: Int -> result = x + y }
+    myLmb(2, 2);
+    println(result)
+```
+
+* `it` is the name of the single parameter inside a lambda expression and is only applicable if you have only once parameter.
+
+```
+
+class ItKey {
+    fun reverseString(str: String, myFunc: (String) -> String) {
+        println(myFunc(str));
+    }
+}
+
+fun main() {
+    val obj = ItKey();
+    obj.reverseString("Hello world") { it.reversed() };
+    
+}
+```
+
+* Making the object's property and method access easy with `lambda and with and apply keyword`
+
+```
+
+class WithApply {
+    var name: String? = null;
+    var age: Int = 0;
+    var canSing: Boolean? = null;
+
+    fun myFunc() {
+        println("Check method..")
+    }
+}
+
+fun main() {
+    val obj = WithApply();
+    with(obj) {
+        name = "Selvesan"
+        age = 20
+        canSing = true
+        myFunc();
+    }    
+    
+    obj.apply {
+        name = "James"
+    }.myFunc();
+
+}
+```
+
+**Below we have solved the problem using interface not by lambda the same problem is solved using lambda on the next step**
+
+* Interface example below to implement a object oriented approach to solve a problem.
+    
+    * A interface with a abstract method.
+        ```
+        interface MyFunctionInterface {
+            fun printSum(sum: Int);
+        }
+        ```
+
+    * You can accept this interface in a method.
+        ```
+        class HighFunctionLambdas {
+            fun addNumbers(a: Int, b: Int, prInt: MyFunctionInterface) {
+                // here as a third argument you are accepting a interface and calling it's method
+            }
+        }
+        ```
+    
+    * Now call the `addNumber` function and send the arguments. 
+        ```
+            val obj = HighFunctionLambdas();
+            obj.addNumbers(2, 2, object : MyFunctionInterface {
+                override fun printSum(sum: Int) {
+                    println(sum);
+                }
+            });
+        ```
+    * **Note** here you are passing the interface with a function.
+
+
+##### Now Using a Lambda 
+
+```
+// A function without a name.
+
+val myLambda: (Int) -> Unit = { s: Int -> print(s) };
+//Unit is a void data type in kotlin since the lambda does not return anything.
+
+myLambda(2);
+```
+
+* Not passing the lambda to a High Level Function.
+```
+    
+    fun addNumberWithLambda(a: Int, b: Int, printLmb: (Int) -> Unit) {
+        val sum = a + b;
+        printLmb(sum);
+    }
+    
+    
+    obj.addNumberWithLambda(2, 2) { s: Int -> println(s) }
+   
+```
+
+
+### Nested Class
+A Class inside a class.
+
+```
+class NestedClass {
+    val name: String = "Selvesan"
+
+    inner class ActualNestedClass {
+
+        fun insideTheNest() {
+            //this name property is only accessible once you declare the nested class with inner keyword
+            println(name);
+        }
+    }
+}
+
+val obj = NestedClass();
+val nestObj = obj.ActualNestedClass();
+nestObj.insideTheNest();
+
+```
+
+
+### Enum
+
+A Collection of information for comparison.
+
+```
+enum class Direction {
+    NORTH, SOUTH, EAST, WEIGHT
+}
+
+
+fun main() {
+    val userRedirection = Direction.SOUTH;
+    if (userRedirection == Direction.SOUTH) {
+        println("You are at south")
+    }
+}
+    
+```
+
+
+
+### Generic Types
+Another way to represent the data of a class. Sometimes i send a object or variable but i don't know the data type i use generate.
+
+Generics can be defined in class or functions.
+
+Here you can define the type for of the data that will be passed to the class.
+
+* The above class is expecting an `int credit`
+```
+class UserAdmin(credit: Int) {
+    init {
+        println(credit)
+    }
+}
+```
+* We can never use the class like `var ua=UserAdmin("Selvesan");`
+
+* The generics defined class can be used by passing any type.
+
+```
+//here the T is a Type representation which can be given as any type.
+class UserAdmin<T>(credit: T) {
+    init {
+        println(credit)
+    }
+}
+```
+
+* Now use the class like this so that you can pass any data type.
+```
+    var uaInt = UserAdmin<Int>(20);
+    var uaString = UserAdmin<String>("Selvesan");
+```
+
+* Can have multiple arguments with multiple type
+
+```
+class UserAdmin<T, X>(credit: T, age: X) {
+    init {
+        println(credit)
+    }
+}
+
+```
+
+* Can also be used in function.
+```
+fun <T> sort(data: T) {
+    println(data)
+}
+
+sort<Int>(20);
+sort<Float>(20.33f);
+```
+
+* Be more specific.
+```
+//Here the sort will take only number types i.e int or float or double
+fun <T> sort(data: T) where T : Number, T : Comparable<T> {
+    println(data)
+}
+
+sort<Int>(20);
+sort<Float>(20.33f);
+sort<String>("Ram");// will fail.
+```
+
+### Delegation 
+**Dictionary Meaning (send or authorize (someone) to do something as a representative.)**  
+
+Delegation is a way to override the function of a implemented interface but through some other class object that is received as an argument.
+
+**Step wise understanding delegation.**
+
+* A interface that has a property and method
+```
+interface CreditCard {
+    val cardNumber: String;
+    fun score(age: Int);
+}
+
+```
+
+* This interface is implemented by two different classes.
+```
+class MasterCard(override val cardNumber: String) : CreditCard {
+    override fun score(age: Int) {
+        println("Master Card $age")
+    }
+}
+
+class Visa(override val cardNumber: String) : CreditCard {
+    override fun score(age: Int) {
+        println("Visa Card $age");
+    }
+}
+```
+
+* Now creating another class which implements the concept of delegation.
+```
+class PayPal(client: CreditCard) : CreditCard by client {
+    //Dictionay Meaning: send or authorize (someone) to do something as a representative.
+    
+}
+
+```
+* Here the class implements the interface but does not have to override the function of the interface as it is accepting the interface as it's argument. Now the argument supplied to this class should be a object of a class that has implemented the `CreditCard` interface.
+
+```
+1    val masterCardObj = MasterCard("1234");
+    masterCardObj.score(20);
+
+2    val visObj = Visa("1234567");
+    visObj.score(20);
+
+
+    //now calling the function with a delegation
+3    val payPalObj = PayPal(visObj);//delegated a Visa
+    payPalObj.score(32);//Visa Card 32 card no: 1234567
+
+
+4    val payPalObj2 = PayPal(masterCardObj);//delegated a Visa
+    payPalObj2.score(54);//Master Card 54 card no: 1234
+```
+
+
+* 3 and 4 are the delegation class instance which accepts the object of the classes that have implemented the interface.
