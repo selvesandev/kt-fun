@@ -143,21 +143,45 @@ x@ for (i in 10 downTo 0 step 2) {
 ```
 
 
+## Collections
 
-### Array
-Array can be declare as: Kotlin provide java way and kotlin way to define `array` and `hashmaps`  
+**Immutable**
+* `listOf`, `mapOf`, `setOf`
 
-Declare an array for `String` with the length of 3.
+**Mutable**
+* `ArrayList`, `arrayListOf`, `mutableListOf` List
+* `HashMap`, `hashMapOf`, `mutableMapOf` Maps
+* `hashSetOf`, `mutableSetOf` Sets
+
+
+### Array.
+Mutable in nature but has fixed size we cannot change the size in future. Collection of values represented by index.
+
 ```
+    var myArr = Array<Int>(5) { 0 }
+    //initial value is inside the lampda function.
     val newPetList: Array<String> = Array(3) { "" }
+
+    myArr[0]=10;
+    
     newPetList[0] = "Tommy"
     newPetList[1] = "Hunter"
     newPetList[2] = "Goldy"
+
+    
+    //Loop to access the value of array
+    for (element in myArr) {
+            println(element)
+    }
+    
+    //Loop to access the index of array
+    for (index in myArr.indices) {
+        println(index)
+    }
+    
+         
 ```
-Declare an array for `Int` with the length of 3.
-```
-    val newPetList: Array<Int> = Array(3) { 0 }
-```
+
 
 ##### String Demo.
 ```
@@ -175,7 +199,110 @@ Declare an array for `Int` with the length of 3.
 ```
 
 
-#### Array List.
+### List.
+Array has a fixed size so we cannot change it later this is a disadvantage.
+```
+var list = listOf<String>("Yogi", "Selvesan",....list goes on);
+```
+The above declared list is immutable therefore once declared we cannot add more values to it later.
+
+```
+list[1]="Check" // you cannot do this.
+```
+
+* Loop for list (List has also a sequential index)
+```
+    for(element in list){
+        println(element)
+    }
+    
+    
+    for (index in list.indices) {
+        println(index)
+    }
+```
+* You can also access the value inside list by `println(list.get(0))`
+
+
+
+### Mutable List
+Use `mutableListOf` or `ArrayList` or `arrayListOf` to create your mutable list all of these are same.
+
+Is mutable in nature and can be modified later and it has no fixed size. You can perform `add` or `remove` method
+
+* Mutable list of function to perform on it `list.remove`, `list.add`,``
+
+* `list[0]="ram"` is also valid.
+
+* `list.add(1,"Shyam")` do this to replace the value at position 1.
+
+
+
+### Map (Immutable)
+Map is a data structure in a key value pair
+
+```
+    val myMap = mapOf<String, Int>("name" to 20);
+    
+    for (key in myMap.keys) {
+        println(myMap[key]) // myMap.get("name")
+    }
+    
+```
+Access the map item by `myMap["key"]` or `myMap.get("key")`
+
+### Mutable Map
+Use `HashMap` or `hashMapOf` or `mutableMapOf`
+ 
+```
+    val myMuMap = HashMap<String, String>();
+```    
+Is mutable in nature we can perform `add` and `remove` and no fixed size is defined.
+
+* `myMap.replace(23,"james")` or `myMap.put(23,"james")` to replace the value at key `23`
+
+
+
+### Immutable Set
+
+* Set Contains unique elements 
+* HashSet also contains unique elements but the sequence is not guaranteed in output.
+
+```
+ val mySet = setOf<Int>(2, 3, 4, 5, 9, 8, 8, 34, 5); //immutable read only.
+
+    for (element in mySet) {
+        println(element)
+    }
+
+```
+
+* Here the set will remove the `duplicate 8` from the set.
+
+
+### Mutable Set
+```
+val mySet = mutableSetOf<Int>(2, 3, 4, 5, 9, 8, 8, 34, 5); //immutable read 
+```
+* `mySet.remove(2)` to remove value 2
+* `mySet.add(2)` to add new item.
+
+
+##### HashSet
+Also contains the unique element but the sequence is not guaranteed in output as it is defined.
+```
+val myHashSet = hashSetOf<Int>(1,23, 2, 3, 4, 5, 6, 7);
+
+    for (element in myHashSet) {
+        print(element.toString() + ", ")
+        
+        //1, 2, 3, 4, 5, 6, 23, 7
+        // here notice the data printed sequence is not as it is defined.
+    }
+    
+```
+
+## -------------
 Array list is a dynamic array any number of items can be added. But has the disadvantage of the array size being doubled.
 `.add` method should be used to add an items.
 
@@ -1373,3 +1500,5 @@ obj.check();
 ```
 
 * Once the casting is done the `ExampleClass` object will have no access to it's `one()` and `two()` method
+
+
