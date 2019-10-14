@@ -1311,3 +1311,65 @@ class PayPal(client: CreditCard) : CreditCard by client {
 
 
 * 3 and 4 are the delegation class instance which accepts the object of the classes that have implemented the interface.
+
+
+### Comparable (Sorting Objects)
+A Object is not comparable by default but you can make them comparable with the help of `Comparable` class provided by Kotlin.
+
+The Comparable class has a method that has to be overridden by the child class `compareTo` and the comparison is done on the basis of the returned value by this function.
+
+
+
+**Comparable to sort object.**
+```
+class CompareA(val name: String, val age: Int) : Comparable<CompareA> {
+    override fun compareTo(other: CompareA): Int {
+        return this.age - other.age;
+    }
+}
+
+val listOfObj = ArrayList<CompareA>();
+listOfObj.add(CompareA("Ram", 30))
+listOfObj.add(CompareA("Shyam", 20))
+listOfObj.add(CompareA("Gopal", 50))
+
+//this sort will not be possible if there was no comparable implemented.
+listOfObj.sort();
+for (user in listOfObj) {
+    println("${user.name}, ${user.age}")
+}
+
+```
+ 
+ 
+### Casting
+Create a instance of a class and convert it to the instance of some other class. 
+
+* For casting to happen the casted class must be a child of the class it is being casted to.
+
+```
+open class Casting {
+    fun check() {
+        println("Hello from Casting class")
+    }
+
+    fun hey() {
+        println("Hey from Casting class")
+    }
+}
+
+class ExampleClass : Casting() {
+    fun one() {
+        println("Hello from one")
+    }
+
+    fun two() {
+        println("Hello from two")
+    }
+}
+
+val obj = ExampleClass() as Casting;
+obj.check();
+```
+
+* Once the casting is done the `ExampleClass` object will have no access to it's `one()` and `two()` method

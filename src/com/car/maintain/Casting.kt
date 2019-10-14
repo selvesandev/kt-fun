@@ -1,6 +1,6 @@
 package com.car.maintain
 
-class Casting {
+open class Casting {
     fun check() {
         println("Hello from Casting class")
     }
@@ -10,17 +10,18 @@ class Casting {
     }
 }
 
-class ExampleClass {
-
-    fun check() {
-        println("From Example")
+class ExampleClass : Casting() {
+    fun one() {
+        println("Hello from one")
     }
 
-
+    fun two() {
+        println("Hello from two")
+    }
 }
 
 fun main() {
-    val obj = ExampleClass() as Casting
+    val obj = ExampleClass() as Casting;
     obj.check();
 
 }
