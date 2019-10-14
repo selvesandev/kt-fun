@@ -36,6 +36,26 @@ str = "Hello you there?"; // datatype required when the value is initialized lat
 
 ```
 
+##### lateinit
+`lateinit` key is a way to tell the compiler that we won't let the variable to be null and initialized it somewhere in our code. So that we dont have to check the variable for null everytime we use it.
+
+```
+class MainActivity : AppCompatActivity() {
+    lateinit var diceImage: ImageView;
+    
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        //giving it a value
+        diceImage = findViewById(R.id.dice_image);
+    }
+    
+}
+```
+
+
 ##### Input Data.
 ```
     val name: String = readLine()!!.toString() //input name which should not be null and convert it to string since the variable only excepts string.
@@ -845,6 +865,7 @@ fun main() {
     myBtn.onclick();
 }
 ```
+<<<<<<< HEAD
 
 
 ### Abstract Classes, Methods and Property.
